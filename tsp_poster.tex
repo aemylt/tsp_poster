@@ -24,6 +24,13 @@
 
 \documentclass[]{templates/poster}
 
+\usepackage{pifont}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+
+\DeclareGraphicsExtensions{.pdf}
+
 \postertitle{Quantum speedup of the Travelling Salesman Problem for bounded-degree graphs}
 \posterauthors{Dominic J. Moylett\textsuperscript{1,2,3}, Noah Linden\textsuperscript{4} and Ashley Montanaro\textsuperscript{4}}
 \posteraffils{\textsuperscript{1}Quantum Engineering Technology Labs, University of Bristol\\\textsuperscript{2}Quantum Engineering Centre for Doctoral Training, University of Bristol\\\textsuperscript{3}Heilbronn Institute for Mathematical Research, University of Bristol\\\textsuperscript{4}School of Mathematics, University of Bristol}
@@ -45,6 +52,25 @@
 \begin{columns}[t]
   \begin{column}{0.422\linewidth}
   \begin{block}{\Large 1. The Travelling Salesman Problem}
+  Let $G = (V, E)$ be a graph with $n$ vertices $V$ and $m$ edges $E$. Associated with $G$ is a cost function $C \colon E \rightarrow \mathbb{Z}^+$. A cycle $H$ on $G$ is a {\em Hamiltonian cycle} if it visits every vertex in $G$ exactly once. The Travelling Salesman Problem is defined as follows:
+  
+  \begin{center}
+  ``Given a graph $G$, return the Hamiltonian cycle with minimum cost.''
+  \begin{figure}
+  \begin{subfigure}[t]{0.3\linewidth}
+  \includegraphics[width=\linewidth]{not_hamiltonian}
+  \caption{\ding{55} Not a Hamiltonian cycle.}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.3\linewidth}
+  \includegraphics[width=\linewidth]{not_shortest}
+  \caption{\ding{55} Not the shortest Hamiltonian cycle. (Length: $2983$ Minutes)}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.3\linewidth}
+  \includegraphics[width=\linewidth]{shortest}
+  \caption{\ding{51} Solution to the Travelling Salesman Problem. (Length: $2938$ Minutes)}
+  \end{subfigure}
+  \end{figure}
+  \end{center}
   \end{block}
   \end{column}
 
