@@ -28,6 +28,8 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{wrapfig}
 
 \DeclareGraphicsExtensions{.pdf}
 
@@ -43,8 +45,12 @@
 
 \begin{columns}[t]
   \begin{column}{0.900\linewidth}
-  \begin{block}{\Large Introduction}
-  The Travelling Salesman Problem (TSP) is one of the oldest and most famous problems in graph theory. As an $NP$-hard problem, it is known that any classical algorithm for exactly solving the problem must take superpolynomial time, otherwise $P = NP$. A na\"ive search across all possible solutions would take an exponential amount of time to solve. Despite this, a number of classical algorithms have been developed to perform better than na\"ive search, including algorithms which solve the TSP for special cases and algorithms which find an approximate solution. But little research has been undertaken on determining whether or not quantum algorithms can outperform classical algorithms for this problem.
+  \begin{block}{\Large Introduction and Main Results}
+  The Travelling Salesman Problem (TSP) is one of the oldest and most famous problems in graph theory. As an $NP$-hard problem, it is known that any classical algorithm for exactly solving the problem must take superpolynomial time, otherwise $P = NP$. But little research has been undertaken on determining whether or not quantum algorithms can outperform classical algorithms for this problem.
+  
+  We demonstrate quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $3$. This is through applying a quantum speedup for backtracking algorithms developed by Montanaro [Mon15] to a pair of algorithms by Xiao \& Nagamochi [XN16a] for solving the TSP when the maximum degree of any vertex in the graph is $3$ and $4$, respectively. We then demonstrate polynomial speedups for graphs of higher degrees. 
+  
+  See arXiv:1612.06203 for further information.
   \end{block}
   \end{column}
 \end{columns}
@@ -52,10 +58,9 @@
 \begin{columns}[t]
   \begin{column}{0.422\linewidth}
   \begin{block}{\Large 1. The Travelling Salesman Problem}
-  Let $G = (V, E)$ be a graph with $n$ vertices $V$ and $m$ edges $E$. Associated with $G$ is a cost function $C \colon E \rightarrow \mathbb{Z}^+$. A cycle $H$ on $G$ is a {\em Hamiltonian cycle} if it visits every vertex in $G$ exactly once. The Travelling Salesman Problem is defined as follows:
+  Let $G = (V, E)$ be a graph with $n$ vertices $V$ and $m$ edges $E$. Associated with $G$ is a cost function $C \colon E \rightarrow \mathbb{Z}^+$. A cycle $H$ on $G$ is a {\em Hamiltonian cycle} if it visits every vertex in $G$ exactly once. The Travelling Salesman Problem is to return the minimum cost Hamiltonian cycle.
   
   \begin{center}
-  ``Given a graph $G$, return the Hamiltonian cycle with minimum cost.''
   \begin{figure}
   \begin{subfigure}[t]{0.3\linewidth}
   \includegraphics[width=\linewidth]{not_hamiltonian}
@@ -72,38 +77,57 @@
   \end{figure}
   \end{center}
   \end{block}
+
+  \begin{block}{\Large 2. Backtracking algorithms}
+  Backtracking algorithms are algorithms used for solving Constraint Satisfaction Problems (CSPs), where the aim is to assign values to variables such that constraints are met. Backtracking algorithms take advantage of the CSP's local structure to solve the problem faster than na\"ive search. This is done using a predicate $P$, which checks if a partial assignment might satisfy the constraints, and a heuristic $h$, which recommends the next variable to assign.
+  
+  Montanaro [Mon15] demonstrated a quantum backtracking algorithm which showed a quadratic speedup in number of calls to $P$ and $h$ for the problem of finding a solution to a CSP.
+  \end{block}
   \end{column}
 
   \begin{column}{0.422\linewidth}
-  \begin{block}{\Large 2. Our results}
-  We demonstrate quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $4$. This is through applying a quantum speedup for backtracking algorithms developed by Montanaro [Mon15] to a pair of algorithms by Xiao \& Nagamochi [XN16a, XN16b] for solving the TSP when the maximum degree of any vertex in the graph is $3$ and $4$, respectively. We then demonstrate polynomial speedups for graphs of degrees $5$ and $6$ by reducing these cases to instances of degree-$4$ graphs.
+  \begin{block}{\Large 3. The Xiao-Nagamochi algorithm for degree-3 graphs}
+  \begin{enumerate}
+\item (Predicate) {\bf If} $G$ is not $2$-edge-connected or the instance violates the parity condition, then return $\infty$;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a reducible circuit $\mathcal{C}$, then return $\text{TSP3}(G', F')$ for an instance $(G',F')$ obtained by applying the circuit procedure on $\mathcal{C}$ started by adding a reducible edge in $\mathcal{C}$ to $F$;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a pair of parallel edges, then return $\text{TSP3}(G',F')$ for an instance $(G',F')$ obtained by applying the reduction rule of eliminating parallel edges;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a $3/4$-cut reducible subgraph $X$ containing at most eight vertices, then return $\text{TSP3}(G',F')$ for an instance $(G',F')$ obtained by applying the $3/4$-cut reduction on $X$;
+\item (Heuristic) {\bf Elseif} there is a $U$-component $H$ that is neither trivial nor a $4$-cycle, then select a good circuit $\mathcal{C}$ in $H$ and return $\min\{\text{TSP3}(G_1,F_1), \text{TSP3}(G_2,F_2)\}$, where $(G_1,F_1)$ and $(G_2,F_2)$ are the
+two resulting instances after branching on $\mathcal{C}$;
+\item (Predicate) {\bf Else} [each $U$-component of the graph is trivial or a $4$-cycle], solve the problem directly via Lemma 3 of [Epp07] in polynomial time and return the cost of an optimal tour.
+\end{enumerate}
+
+  By separating each step of the X-N algorithm into predicate and heuristic as above, we can implement the algorithm as a backtracking algorithm and use it to find a Hamiltonian cycle. We then repeat this process $O(\log L)$ times to find the shortest Hamiltonian cycle, where $L = \max_{e \in E}(C(e))$.
   \end{block}
   \end{column}
 \end{columns}
+  
+  \begin{columns}[t]
+  \begin{column}{0.422\linewidth}
 
-\begin{columns}[t]
-  \begin{column}{0.422\linewidth}
-  \begin{block}{\Large 3. Backtracking algorithms}
-  \end{block}
-  \end{column}
-  \begin{column}{0.422\linewidth}
-  \begin{block}{\Large 4. The Xiao-Nagamochi algorithm for degree-3 graphs}
-  \end{block}
-  \end{column}
-\end{columns}
+  \begin{block}{\Large 4. Expanding to higher-degree graphs}
+  \begin{wrapfigure}[9]{r}{0.3\linewidth}
+  \includegraphics[width=\linewidth]{deg5}
+  \caption{Example of splitting a vertex of degree 6 into two vertices of degree 4.}
+  \end{wrapfigure}
 
-\begin{columns}[t]
-  \begin{column}{0.422\linewidth}
-  \begin{block}{\Large 5. Expanding to higher-degree graphs}
+  The same technique as in Sec.\ 3 produces a quadratic speedup for another algorithm for degree-4 graphs [XN16b]. Speedups for graphs of degrees 5 and 6 can be found by breaking vertices into two lower-degree vertices connected by an edge that has to be included in the Hamiltonian cycle.
+  
+  Not all ways of splitting these vertices will preserve the shortest Hamiltonian cycle, but we can use D\"urr and H\o yer's minimum-finding algorithm [DH99] to search over all possible ways of splitting the vertices.
   \end{block}
   \end{column}
+
   \begin{column}{0.422\linewidth}
   \begin{block}{\Large References}
+  [DH99] C. D\"urr and P. H\o yer, arXiv:quant-ph/9607014 (1999)
+
+  [Epp07] D. Eppstein, Journal of Graph Algorithms and Applications, 11(1):61--81, (2007)
+
   [Mon15] A. Montanaro, arXiv:1509.02374 (2015)
 
   [XN16a] M. Xiao and H. Nagamochi, Algorithmica 74(2):713--741, (2016)
 
-  [XN16b] M. Xiao and H. Nagamochi, Theory of Computing Systems, 58(2):241--272 (2016)
+  [XN16b] M. Xiao and H. Nagamochi, Theory of Computing Systems, 58(2):241--272, (2016)
   \end{block}
   \end{column}
 \end{columns}
