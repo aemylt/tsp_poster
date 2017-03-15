@@ -87,17 +87,19 @@
 
   \begin{column}{0.422\linewidth}
   \begin{block}{\Large 3. The Xiao-Nagamochi algorithm for degree-3 graphs}
+  Xiao-Nagamochi is a generalisation of Eppstein's algorithm [Epp07], described below:
   \begin{enumerate}
-\item (Predicate) {\bf If} $G$ is not $2$-edge-connected or the instance violates the parity condition, then return $\infty$;
-\item (Predicate \& Heuristic) {\bf Elseif} there is a reducible circuit $\mathcal{C}$, then return $\text{TSP3}(G', F')$ for an instance $(G',F')$ obtained by applying the circuit procedure on $\mathcal{C}$ started by adding a reducible edge in $\mathcal{C}$ to $F$;
-\item (Predicate \& Heuristic) {\bf Elseif} there is a pair of parallel edges, then return $\text{TSP3}(G',F')$ for an instance $(G',F')$ obtained by applying the reduction rule of eliminating parallel edges;
-\item (Predicate \& Heuristic) {\bf Elseif} there is a $3/4$-cut reducible subgraph $X$ containing at most eight vertices, then return $\text{TSP3}(G',F')$ for an instance $(G',F')$ obtained by applying the $3/4$-cut reduction on $X$;
-\item (Heuristic) {\bf Elseif} there is a $U$-component $H$ that is neither trivial nor a $4$-cycle, then select a good circuit $\mathcal{C}$ in $H$ and return $\min\{\text{TSP3}(G_1,F_1), \text{TSP3}(G_2,F_2)\}$, where $(G_1,F_1)$ and $(G_2,F_2)$ are the
-two resulting instances after branching on $\mathcal{C}$;
-\item (Predicate) {\bf Else} [each $U$-component of the graph is trivial or a $4$-cycle], solve the problem directly via Lemma 3 of [Epp07] in polynomial time and return the cost of an optimal tour.
+\item (Predicate) {\bf If} there aren't two distinct paths between any pair of vertices, then abort;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a vertex of degree 2, add both edges to $F$ and return $TSP3(G, F)$;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a vertex incident to two forced edges, remove any third edge and return $TSP3(G, F)$;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a pair of parallel edges and more than two vertices, remove the longer unforced edge and return $TSP3(G, F)$;
+\item (Predicate \& Heuristic) {\bf Elseif} there is a triangle, reduce the triangle to a single vertex of degree 3 and return $TSP3(G, F)$;
+\item (Predicate) {\bf Elseif} $G \setminus F$ is a disjoint collection of $4$-cycles, solve the problem directly via Lemma 3 of [Epp07] in polynomial time.
+\item (Predicate \& Heuristic) {\bf Elseif} there is a cycle of 4 unforced edges incident to a forced edge, add the opposite edge to $F$ and return $TSP3(G, F)$;
+\item (Heuristic) Pick an edge $e$ adjacent to an edge in $F$, call $TSP3(G\setminus \{e\}, F)$, $TSP3(G, F \cup \{e\})$ and return the shorter cycle;
 \end{enumerate}
 
-  By separating each step of the X-N algorithm into predicate and heuristic as above, we can implement the algorithm as a backtracking algorithm and use it to find a Hamiltonian cycle. We then repeat this process $O(\log L)$ times to find the shortest Hamiltonian cycle, where $L = \max_{e \in E}(C(e))$.
+  By separating each step of the algorithm into predicate and heuristic as above, we can find a Hamiltonian cycle using [Mon15]. We repeat this process as a binary search $O(\log L)$ times to find the shortest Hamiltonian cycle, where $L = \max_{e \in E}(C(e))$.
   \end{block}
   \end{column}
 \end{columns}
@@ -111,7 +113,7 @@ two resulting instances after branching on $\mathcal{C}$;
   \caption{Example of splitting a vertex of degree 6 into two vertices of degree 4.}
   \end{wrapfigure}
 
-  The same technique as in Sec.\ 3 produces a quadratic speedup for another algorithm for degree-4 graphs [XN16b]. Speedups for graphs of degrees 5 and 6 can be found by breaking vertices into two lower-degree vertices connected by an edge that has to be included in the Hamiltonian cycle.
+  The same technique as in Sec.\ 3 produces a quadratic speedup for another algorithm for degree-4 graphs [XN16b]. Speedups for graphs of degrees 5 and 6 can be found by breaking vertices into two lower-degree vertices connected by a forced edge.
   
   Not all ways of splitting these vertices will preserve the shortest Hamiltonian cycle, but we can use D\"urr and H\o yer's minimum-finding algorithm [DH99] to search over all possible ways of splitting the vertices.
   \end{block}
@@ -121,13 +123,13 @@ two resulting instances after branching on $\mathcal{C}$;
   \begin{block}{\Large References}
   [DH99] C. D\"urr and P. H\o yer, arXiv:quant-ph/9607014 (1999)
 
-  [Epp07] D. Eppstein, Journal of Graph Algorithms and Applications, 11(1):61--81, (2007)
+  \noindent[Epp07] D. Eppstein, Journal of Graph Algorithms and Applications, 11(1):61--81, (2007)
 
-  [Mon15] A. Montanaro, arXiv:1509.02374 (2015)
+  \noindent[Mon15] A. Montanaro, arXiv:1509.02374 (2015)
 
-  [XN16a] M. Xiao and H. Nagamochi, Algorithmica 74(2):713--741, (2016)
+  \noindent[XN16a] M. Xiao and H. Nagamochi, Algorithmica 74(2):713--741, (2016)
 
-  [XN16b] M. Xiao and H. Nagamochi, Theory of Computing Systems, 58(2):241--272, (2016)
+  \noindent[XN16b] M. Xiao and H. Nagamochi, Theory of Computing Systems, 58(2):241--272, (2016)
   \end{block}
   \end{column}
 \end{columns}
