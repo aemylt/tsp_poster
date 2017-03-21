@@ -30,6 +30,7 @@
 \usepackage{graphicx}
 \usepackage{amsthm}
 \usepackage{wrapfig}
+\usepackage{framed}
 
 \DeclareGraphicsExtensions{.pdf}
 
@@ -50,7 +51,7 @@
   
   We demonstrate quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $3$. This is through applying a quantum speedup for backtracking algorithms developed by Montanaro [Mon15] to a pair of algorithms by Xiao \& Nagamochi [XN16a,XN16b] for solving the TSP. We then demonstrate polynomial speedups for graphs of higher degrees. 
   
-  This poster is based on arXiv:1612.06203.
+  See {\tt arXiv:1612.06203} for more information.
   \end{block}
   \end{column}
 \end{columns}
@@ -91,7 +92,7 @@
 
   The best-performing backtracking algorithm for the TSP on degree-3 graphs is the Xiao-Nagamochi algorithm, which runs in $O^*(2^{3n/10})$ time and polynomial space, where $O^*$ hides polynomial factors.
   
-  While the details of this algorithm are technical, the steps the algorithm takes can be written as a predicate, a heuristic, and a reduction function, where the reduction function is a step called by both the predicate and heuristic to simplify the graph.
+  The details of the Xiao-Nagamochi algorithm are technical, but the steps the algorithm takes can be broken up into a predicate, a heuristic and a reduction function, where the reduction function is a step called by both the predicate and heuristic to simplify the graph.
 
   By applying the quantum speedup from [Mon15] to the Xiao-Nagamochi algorithm, we can find a Hamiltonian cycle with probability $\delta$ in $O^*(2^{3n/20}\log(1/\delta))$ time.
   
@@ -104,16 +105,18 @@
   \begin{column}{0.422\linewidth}
 
   \begin{block}{\Large 4. Expanding to higher-degree graphs}
-  \begin{wrapfigure}[9]{r}{0.2\linewidth}
+  \begin{wrapfigure}[11]{r}{0.2\linewidth}
+  \begin{framed}\raggedleft
   \includegraphics[width=\linewidth]{deg5}
   \caption{Example of splitting a vertex of degree 6 into two vertices of degree 4.}
+  \end{framed}
   \end{wrapfigure}
 
   For degree-4 graphs, we apply the speedup from [Mon15] to the algorithm of [XN16b], solving the problem in $O^*(1.301^n\log L \log\log L)$ time.
   
-  Speedups for graphs of degrees 5 and 6 can be found by breaking higher-degree vertices into two lower-degree vertices connected by a forced edge, and then running the degree-4 algorithm on these graphs.
+  Speedups for graphs of degree 5 and 6 can be found by breaking higher-degree vertices into degree-4 vertices connected by a forced edge. We use D\"urr and H\o yer's minimum-finding algorithm [DH99] to search over possible ways of splitting each vertex and return the minimum.
   
-  Not all ways of splitting these vertices will work, but we can use D\"urr and H\o yer's minimum-finding algorithm [DH99] to search over every way. For degree-5 and degree-6 graphs, there are 10 ways of which 6 will preserve the solution. This gives a runtime of $O^*(1.680^n\log L\log\log L)$.
+  If there are $f$ vertices of degree $5$ or $6$, there are $10^f$ splittings, of which $6^f$ will succeed. Our runtime is  $O^*((10/6)^{f/2}1.301^n\log L\log\log L) = O^*(1.680^n\log L\log\log L)$.
 
   At degree-7, classical algorithms for the general TSP are faster [HK62, Bj\"o14].
   \end{block}
@@ -123,13 +126,13 @@
   \begin{block}{\Large References}
   [Bj\"o14] A. "Bj{\"o}rklund, SIAM Journal on Computing, 43(1):280--299 (2014)
 
-  \noindent[DH99] C. D\"urr and P. H\o yer, arXiv:quant-ph/9607014 (1999)
+  \noindent[DH99] C. D\"urr and P. H\o yer, {\tt arXiv:quant-ph/9607014} (1999)
 
   \noindent[Epp07] D. Eppstein, Journal of Graph Algorithms and Applications, 11(1):61--81, (2007)
 
   \noindent[HK62] M. Held and R. Karp, Journal of the Society for Industrial and Applied Mathematics, 10(1):196--210, (1962)
 
-  \noindent[Mon15] A. Montanaro, arXiv:1509.02374 (2015)
+  \noindent[Mon15] A. Montanaro, {\tt arXiv:1509.02374} (2015)
 
   \noindent[XN16a] M. Xiao and H. Nagamochi, Algorithmica 74(2):713--741, (2016)
 
