@@ -49,7 +49,7 @@
   \begin{block}{\Large Introduction and Main Results}
   The Travelling Salesman Problem (TSP) is one of the oldest and most famous problems in graph theory. It is known that any classical algorithm for exactly solving the problem must take superpolynomial time unless $P = NP$. But little research has been undertaken on determining whether or not quantum algorithms can outperform classical algorithms for this problem.
   
-  We demonstrate quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $3$. This is through applying a quantum speedup for backtracking algorithms developed by Montanaro [Mon15] to a pair of algorithms by Xiao \& Nagamochi [XN16a,XN16b] for solving the TSP. We then demonstrate polynomial speedups for graphs of higher degrees. 
+  We demonstrate near-quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $4$. This is through applying a quantum speedup for backtracking algorithms developed by Montanaro [Mon15] to a pair of algorithms by Xiao \& Nagamochi [XN16a,XN16b] for solving the TSP. We then demonstrate polynomial speedups for graphs of higher degrees. 
   
   See {\tt arXiv:1612.06203} for more information.
   \end{block}
@@ -94,7 +94,7 @@
   
   The details of the Xiao-Nagamochi algorithm are technical, but the steps the algorithm takes can be broken up into a predicate, a heuristic and a reduction function, where the reduction function is a step called by both the predicate and heuristic to simplify the graph.
 
-  By applying the quantum speedup from [Mon15] to the Xiao-Nagamochi algorithm, we can find a Hamiltonian cycle with probability $\delta$ in $O^*(2^{3n/20}\log(1/\delta))$ time.
+  By applying the quantum speedup from [Mon15] to the Xiao-Nagamochi algorithm, we can find a Hamiltonian cycle with failure probability $\delta$ in $O^*(2^{3n/20}\log(1/\delta))$ time.
   
   To find the shortest Hamiltonian cycle, we repeat the algorithm but add the constraint that the length of the cycle must be shorter than a given bound. We update this bound in a binary search fashion, and find the shortest Hamiltonian cycle in $O^*(2^{3n/20}\log L\log\log L)$ time, where $L$ is the length of the longest edge and the $\log\log L$ term is to make the probability of error arbitrarily small.
   \end{block}
@@ -124,7 +124,7 @@
 
   \begin{column}{0.422\linewidth}
   \begin{block}{\Large References}
-  [Bj\"o14] A. "Bj{\"o}rklund, SIAM Journal on Computing, 43(1):280--299 (2014)
+  [Bj\"o14] A. Bj{\"o}rklund, SIAM Journal on Computing, 43(1):280--299 (2014)
 
   \noindent[DH99] C. D\"urr and P. H\o yer, {\tt arXiv:quant-ph/9607014} (1999)
 
