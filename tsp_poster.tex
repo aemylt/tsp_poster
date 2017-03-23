@@ -36,7 +36,7 @@
 
 \postertitle{Quantum speedup of the Travelling Salesman Problem for bounded-degree graphs}
 \posterauthors{Dominic J. Moylett\textsuperscript{1,2,3}, Noah Linden\textsuperscript{4} and Ashley Montanaro\textsuperscript{4}}
-\posteraffils{\textsuperscript{1}Quantum Engineering Technology Labs, University of Bristol\\\textsuperscript{2}Quantum Engineering Centre for Doctoral Training, University of Bristol\\\textsuperscript{3}Heilbronn Institute for Mathematical Research, University of Bristol\\\textsuperscript{4}School of Mathematics, University of Bristol}
+\posteraffils{\textsuperscript{1}Quantum Engineering Technology Labs, H. H. Wills Physics Laboratory and Department of Electrical \& Electronic Engineering, University of Bristol, BS8 1FD, United Kingdom\\\textsuperscript{2}Quantum Engineering Centre for Doctoral Training, H. H. Wills Physics Laboratory and Department of Electrical \& Electronic Engineering, University of Bristol, BS8 1FD, United Kingdom\\\textsuperscript{3}Heilbronn Institute for Mathematical Research, University of Bristol, BS8 1SN, United Kingdom\\\textsuperscript{4}School of Mathematics, University of Bristol, BS8 1TW, United Kingdom}
 
 \begin{document}
 
@@ -45,13 +45,29 @@
 \begin{frame}{} 
 
 \begin{columns}[t]
-  \begin{column}{0.900\linewidth}
-  \begin{block}{\Large Introduction and Main Results}
-  The Travelling Salesman Problem (TSP) is one of the oldest and most famous problems in graph theory. It is known that any classical algorithm for exactly solving the problem must take superpolynomial time unless $P = NP$. But little research has been undertaken on determining whether or not quantum algorithms can outperform classical algorithms for this problem.
+  \begin{column}{0.422\linewidth}
+  \begin{block}{\Large Introduction}
+  \begin{itemize}
+  \item The Travelling Salesman Problem (TSP) is one of the oldest and most famous problems in graph theory.
+
+  \item It is $NP$-hard, so no known exact polynomial-time algorithms exist.
   
-  We demonstrate near-quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $4$. This is through applying a quantum speedup for backtracking algorithms developed by Montanaro [Mon15] to a pair of algorithms by Xiao \& Nagamochi [XN16a,XN16b] for solving the TSP. We then demonstrate polynomial speedups for graphs of higher degrees. 
+  \item There has been little research on quantum algorithms for it.
+  \end{itemize}
+  \end{block}
+  \end{column}
+  \begin{column}{0.422\linewidth}
+
+  \begin{block}{\Large Main Results}
+  \begin{itemize}
+  \item We demonstrate near-quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $4$.
   
-  See {\tt arXiv:1612.06203} for more information.
+  \item This is through applying a quantum speedup [Mon15] to two TSP algorithms [XN16a,XN16b].
+  
+  \item We then demonstrate polynomial speedups up to degree-6.
+  
+  \item See Physical Review A 95(3), 032323 (2017) [{\tt arXiv:1612.06203}] for further details.
+  \end{itemize}
   \end{block}
   \end{column}
 \end{columns}
@@ -59,44 +75,64 @@
 \begin{columns}[t]
   \begin{column}{0.422\linewidth}
   \begin{block}{\Large 1. The Travelling Salesman Problem}
-  Let $G = (V, E)$ be a graph with $n$ vertices $V$ and $m$ edges $E$. Associated with $G$ is a cost function $C \colon E \rightarrow \mathbb{Z}^+$. A cycle $H$ on $G$ is a {\em Hamiltonian cycle} if it visits every vertex in $G$ exactly once. The Travelling Salesman Problem is to return the minimum cost Hamiltonian cycle.
+  \begin{itemize}
+  \item Let $G$ be a graph with $n$ vertices and $m$ edges.
+  
+  \item A cycle $H$ on $G$ is a {\em Hamiltonian cycle} if it visits every vertex in $G$.
+  
+  \item The TSP is to find the shortest Hamiltonian cycle.
+  \end{itemize}
   
   \begin{center}
   \begin{figure}
-  \begin{subfigure}[t]{0.3\linewidth}
+  \begin{subfigure}[t]{0.32\linewidth}
   \includegraphics[width=\linewidth]{not_hamiltonian}
   \caption{\ding{55} Not a Hamiltonian cycle.}
   \end{subfigure}
-  \begin{subfigure}[t]{0.3\linewidth}
+  \begin{subfigure}[t]{0.32\linewidth}
   \includegraphics[width=\linewidth]{not_shortest}
   \caption{\ding{55} Not the shortest Hamiltonian cycle. (Length: $2983$ Minutes)}
   \end{subfigure}
-  \begin{subfigure}[t]{0.3\linewidth}
+  \begin{subfigure}[t]{0.32\linewidth}
   \includegraphics[width=\linewidth]{shortest}
-  \caption{\ding{51} Solution to the Travelling Salesman Problem. (Length: $2938$ Minutes)}
+  \caption{\ding{51} Solution to the TSP. (Length: $2938$ Minutes)}
   \end{subfigure}
   \end{figure}
   \end{center}
   \end{block}
 
   \begin{block}{\Large 2. Backtracking algorithms}
-  Backtracking algorithms are a way of solving constraint satisfaction problems faster than na\"ive search. This is done using a predicate $P$, which checks if a partial assignment might satisfy the constraints, and a heuristic $h$, which recommends the next variable to assign given a partial assignment.
+  \begin{itemize}
+  \item Backtracking algorithms are a way of solving constraint satisfaction problems.
   
-  Montanaro [Mon15] demonstrated a quantum backtracking algorithm which has a quadratic speedup in the number of calls to $P$ and $h$ for finding any solution. This is under the constraints that the predicate and heuristic only depend on local information and that the entire backtracking algorithm's search space is explored.
+  \item They have two parts:
+  \begin{enumerate}
+  \item A predicate, which checks if the constraints are satisfiable;
+  \item and a heuristic, which chooses the next variable to assign.
+\end{enumerate}
+  
+  \item Montanaro [Mon15] developed a quantum backtracking algorithm which has a quadratic speedup for finding a solution.
+  \end{itemize}
   \end{block}
   \end{column}
 
   \begin{column}{0.422\linewidth}
-  \begin{block}{\Large 3. Quantum speedup of the TSP for degree-3 graphs}
-  Backtracking algorithms for the TSP solve the problem of finding the shortest Hamiltonian cycle that includes a subset of ``forced'' edges. The predicate checks whether or not such a Hamiltonian cycle is still possible, and the heuristic selects another edge to either force or remove from the graph. This continues until a Hamiltonian cycle is found, a Hamiltonian cycle is impossible to find, or the graph is such that the TSP can be solved in polynomial time via [Epp07, Lemma 3].
-
-  The best-performing backtracking algorithm for the TSP on degree-3 graphs is the Xiao-Nagamochi algorithm, which runs in $O^*(2^{3n/10})$ time and polynomial space, where $O^*$ hides polynomial factors.
+  \begin{block}{\Large 3. Quantum speedup for degree-3 graphs}
+  \begin{figure}
+  \includegraphics[width=\linewidth]{reduction}
+  \caption{Example of forcing or removing edge $bc$.}
+  \end{figure}
+  \begin{itemize}
+  \item Backtracking algorithms can solve the TSP with ``forced'' edges.
   
-  The details of the Xiao-Nagamochi algorithm are technical, but the steps the algorithm takes can be broken up into a predicate, a heuristic and a reduction function, where the reduction function is a step called by both the predicate and heuristic to simplify the graph.
+  \item The predicate checks if a Hamiltonian cycle is possible, and the heuristic selects another edge to force or remove.
 
-  By applying the quantum speedup from [Mon15] to the Xiao-Nagamochi algorithm, we can find a Hamiltonian cycle with failure probability $\delta$ in $O^*(2^{3n/20}\log(1/\delta))$ time.
+  \item The best backtracking algorithm on degree-3 graphs runs in $O^*(2^{3n/10})$ time and polynomial space [XN16a].
   
-  To find the shortest Hamiltonian cycle, we repeat the algorithm but add the constraint that the length of the cycle must be shorter than a given bound. We update this bound in a binary search fashion, and find the shortest Hamiltonian cycle in $O^*(2^{3n/20}\log L\log\log L)$ time, where $L$ is the length of the longest edge and the $\log\log L$ term is to make the probability of error arbitrarily small.
+  \item We apply [Mon15] to this algorithm to find a Hamiltonian cycle with failure probability $\delta$ in $O^*(2^{3n/20}\log(1/\delta))$ time.
+  
+  \item We find the shortest Hamiltonian cycle with bounded error via binary search with $O(\log L\log\log L)$ overhead.
+  \end{itemize}
   \end{block}
   \end{column}
 \end{columns}
@@ -105,20 +141,20 @@
   \begin{column}{0.422\linewidth}
 
   \begin{block}{\Large 4. Expanding to higher-degree graphs}
-  \begin{wrapfigure}[11]{r}{0.2\linewidth}
-  \begin{framed}\raggedleft
+  \begin{figure}
   \includegraphics[width=\linewidth]{deg5}
-  \caption{Example of splitting a vertex of degree 6 into two vertices of degree 4.}
-  \end{framed}
-  \end{wrapfigure}
+  \caption{Ways of splitting a vertex of degree 5 or 6 into two lower-degree vertices.}
+  \end{figure}
 
-  For degree-4 graphs, we apply the speedup from [Mon15] to the algorithm of [XN16b], solving the problem in $O^*(1.301^n\log L \log\log L)$ time.
+  \begin{itemize}
+  \item For degree-4 graphs, we apply the same technique to the algorithm of [XN16b] in $O^*(1.301^n\log L \log\log L)$ time.
   
-  Speedups for graphs of degree 5 and 6 can be found by breaking higher-degree vertices into degree-4 vertices connected by a forced edge. We use D\"urr and H\o yer's minimum-finding algorithm [DH99] to search over possible ways of splitting each vertex and return the minimum.
+  \item Other speedups can be found by breaking higher-degree vertices into degree 4 vertices connected by forced edges.
   
-  If there are $f$ vertices of degree $5$ or $6$, there are $10^f$ splittings, of which $6^f$ will succeed. Our runtime is  $O^*((10/6)^{f/2}1.301^n\log L\log\log L) = O^*(1.680^n\log L\log\log L)$.
+  \item We find the shortest way of splitting each vertex via [DH99].
 
-  At degree-7, classical algorithms for the general TSP are faster [HK62, Bj\"o14].
+  \item This gives a polynomial speedup for degree-5/6 graphs, but is slower than classical algorithms for degree-7 [HK62, Bj\"o14].
+  \end{itemize}
   \end{block}
   \end{column}
 
@@ -127,8 +163,6 @@
   [Bj\"o14] A. Bj{\"o}rklund, SIAM Journal on Computing, 43(1):280--299 (2014)
 
   \noindent[DH99] C. D\"urr and P. H\o yer, {\tt arXiv:quant-ph/9607014} (1999)
-
-  \noindent[Epp07] D. Eppstein, Journal of Graph Algorithms and Applications, 11(1):61--81, (2007)
 
   \noindent[HK62] M. Held and R. Karp, Journal of the Society for Industrial and Applied Mathematics, 10(1):196--210, (1962)
 
