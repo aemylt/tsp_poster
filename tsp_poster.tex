@@ -45,24 +45,12 @@
 \begin{frame}{} 
 
 \begin{columns}[t]
-  \begin{column}{0.422\linewidth}
-  \begin{block}{\Large Introduction}
-  \begin{itemize}
-  \item The Travelling Salesman Problem (TSP) is one of the oldest and most famous problems in graph theory.
-
-  \item It is $NP$-hard, so no known exact polynomial-time algorithms exist.
-  
-  \item There has been little research on quantum algorithms for it.
-  \end{itemize}
-  \end{block}
-  \end{column}
-  \begin{column}{0.422\linewidth}
-
+  \begin{column}{0.900\linewidth}
   \begin{block}{\Large Main Results}
   \begin{itemize}
-  \item We demonstrate near-quadratic speedups for solving the TSP when the degree of any vertex in the graph is at most $4$.
+  \item We demonstrate near-quadratic speedups for the Travelling Salesman Problem (TSP) when the degree of any vertex in the graph is at most $4$.
   
-  \item This is through applying a quantum speedup [Mon15] to two TSP algorithms [XN16a,XN16b].
+  \item This is through applying a quantum speedup for backtracking [Mon15] to two TSP algorithms [XN16a,XN16b].
   
   \item We then demonstrate polynomial speedups up to degree-6.
   
@@ -78,27 +66,28 @@
   \begin{itemize}
   \item Let $G$ be a graph with $n$ vertices and $m$ edges.
   
-  \item A cycle $H$ on $G$ is a {\em Hamiltonian cycle} if it visits every vertex in $G$.
+  \item A cycle $H$ on $G$ is {\em Hamiltonian} if it visits every vertex in $G$.
   
   \item The TSP is to find the shortest Hamiltonian cycle.
-  \end{itemize}
   
   \begin{center}
   \begin{figure}
   \begin{subfigure}[t]{0.32\linewidth}
   \includegraphics[width=\linewidth]{not_hamiltonian}
-  \caption{\ding{55} Not a Hamiltonian cycle.}
+  \caption{{\color{red}\ding{55}} Not a Hamiltonian cycle.}
   \end{subfigure}
   \begin{subfigure}[t]{0.32\linewidth}
   \includegraphics[width=\linewidth]{not_shortest}
-  \caption{\ding{55} Not the shortest Hamiltonian cycle. (Length: $2983$ Minutes)}
+  \caption{{\color{red}\ding{55}} Not the shortest Hamiltonian cycle. (Length: $3028$ Minutes)}
   \end{subfigure}
   \begin{subfigure}[t]{0.32\linewidth}
   \includegraphics[width=\linewidth]{shortest}
-  \caption{\ding{51} Solution to the TSP. (Length: $2938$ Minutes)}
+  \caption{{\color{green}\ding{51}} Solution to the TSP. (Length: $2938$ Minutes)}
   \end{subfigure}
   \end{figure}
   \end{center}
+  \item The TSP is NP-Hard, so the best general classical algorithms take exponential time in $n$.
+  \end{itemize}
   \end{block}
 
   \begin{block}{\Large 2. Backtracking algorithms}
@@ -110,6 +99,10 @@
   \item A predicate, which checks if the constraints are satisfiable;
   \item and a heuristic, which chooses the next variable to assign.
 \end{enumerate}
+
+  \item When called with a partial assignment, the predicate checks if the constraints are satisfiable. If not, we return.
+  
+  \item Otherwise, the heuristic picks a variable which we assign a value to and recursively call ourselves with this new partial assignment.
   
   \item Montanaro [Mon15] developed a quantum backtracking algorithm which has a quadratic speedup for finding a solution.
   \end{itemize}
@@ -127,11 +120,11 @@
   
   \item The predicate checks if a Hamiltonian cycle is possible, and the heuristic selects another edge to force or remove.
 
-  \item The best backtracking algorithm on degree-3 graphs runs in $O^*(2^{3n/10})$ time and polynomial space [XN16a].
+  \item The best backtracking algorithm on degree-3 graphs runs in {\color{uobred} $O^*(2^{3n/10})$} time and polynomial space [XN16a].
   
-  \item We apply [Mon15] to this algorithm to find a Hamiltonian cycle with failure probability $\delta$ in $O^*(2^{3n/20}\log(1/\delta))$ time.
+  \item We apply [Mon15] to this algorithm to find a Hamiltonian cycle with failure probability $\delta$ in {\color{uobred}$O^*(2^{3n/20}\log(1/\delta))$} time.
   
-  \item We find the shortest Hamiltonian cycle with bounded error via binary search with $O(\log L\log\log L)$ overhead.
+  \item We find the shortest Hamiltonian cycle with bounded error via binary search with {\color{uobred}$O(\log L\log\log L)$} overhead.
   \end{itemize}
   \end{block}
   \end{column}
@@ -147,7 +140,7 @@
   \end{figure}
 
   \begin{itemize}
-  \item For degree-4 graphs, we apply the same technique to the algorithm of [XN16b] in $O^*(1.301^n\log L \log\log L)$ time.
+  \item For degree-4 graphs, we apply the same technique to the algorithm of [XN16b] in {\color{uobred}$O^*(1.301^n\log L \log\log L)$} time.
   
   \item Other speedups can be found by breaking higher-degree vertices into degree 4 vertices connected by forced edges.
   
