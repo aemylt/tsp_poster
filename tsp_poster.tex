@@ -45,10 +45,10 @@
 \begin{frame}{} 
 
 \begin{columns}[t]
-  \begin{column}{0.900\linewidth}
+  \begin{column}{0.422\linewidth}
   \begin{block}{\Large Main Results}
   \begin{itemize}
-  \item We demonstrate near-quadratic speedups for the Travelling Salesman Problem (TSP) when the degree of any vertex in the graph is at most $4$.
+  \item We show near-quadratic speedups for the Travelling Salesman Problem (TSP) when the degree of any vertex is at most $4$.
   
   \item This is through applying a quantum speedup for backtracking [Mon15] to two TSP algorithms [XN16a,XN16b].
   
@@ -57,11 +57,7 @@
   \item See Physical Review A 95(3), 032323 (2017) [{\tt arXiv:1612.06203}] for further details.
   \end{itemize}
   \end{block}
-  \end{column}
-\end{columns}
 
-\begin{columns}[t]
-  \begin{column}{0.422\linewidth}
   \begin{block}{\Large 1. The Travelling Salesman Problem}
   \begin{itemize}
   \item Let $G$ be a graph with $n$ vertices and $m$ edges.
@@ -86,7 +82,7 @@
   \end{subfigure}
   \end{figure}
   \end{center}
-  \item The TSP is NP-Hard, so the best general classical algorithms take exponential time in $n$.
+  \item The best general classical algorithms take exponential time in $n$.
   \end{itemize}
   \end{block}
 
@@ -107,33 +103,36 @@
   \item Montanaro [Mon15] developed a quantum backtracking algorithm which has a quadratic speedup for finding a solution.
   \end{itemize}
   \end{block}
-  \end{column}
 
-  \begin{column}{0.422\linewidth}
   \begin{block}{\Large 3. Quantum speedup for degree-3 graphs}
-  \begin{figure}
-  \includegraphics[width=\linewidth]{reduction}
-  \caption{Example of forcing or removing edge $bc$.}
-  \end{figure}
   \begin{itemize}
-  \item Backtracking algorithms can solve the TSP with ``forced'' edges.
+  \item Backtracking algorithms can solve the TSP with ``forced'' edges which me must travel down and ``removed'' edges which we must avoid travelling on.
   
   \item The predicate checks if a Hamiltonian cycle is possible, and the heuristic selects another edge to force or remove.
 
   \item The best backtracking algorithm on degree-3 graphs runs in {\color{uobred} $O^*(2^{3n/10})$} time and polynomial space [XN16a].
   
-  \item We apply [Mon15] to this algorithm to find a Hamiltonian cycle with failure probability $\delta$ in {\color{uobred}$O^*(2^{3n/20}\log(1/\delta))$} time.
+  \item We apply [Mon15] to this algorithm to find a Hamiltonian cycle, failing to find one when one exists with probability $\delta$, in {\color{uobred}$O^*(2^{3n/20}\log(1/\delta))$} time, where $O^*$ hides polynomial factors.
   
-  \item We find the shortest Hamiltonian cycle with bounded error via binary search with {\color{uobred}$O(\log L\log\log L)$} overhead.
+  \item We find the shortest Hamiltonian cycle with bounded error (finding a sub-optimal cycle or no cycle) via binary search with {\color{uobred}$O(\log L\log\log L)$} overhead, where $L$ is the longest edge length.
   \end{itemize}
   \end{block}
   \end{column}
-\end{columns}
-  
-  \begin{columns}[t]
-  \begin{column}{0.422\linewidth}
 
-  \begin{block}{\Large 4. Expanding to higher-degree graphs}
+  \begin{column}{0.422\linewidth}
+  
+  \begin{block}{4. Example backtracking step}
+  \begin{figure}
+  \includegraphics[width=\linewidth]{reduction}
+  \end{figure}
+  \begin{itemize}
+  \item Forcing $bc$, as shown on the left, means that $b$ and $c$ are incident to two forced edges, so $ci$ and $bd$ are removed. Now $d$ and $i$ are of degree 2, so edges $df, dg, hi$ and $ij$ are forced.
+  
+  \item Removing $bc$, as shown on the right, means that $b$ and $c$ are of degree 2, so edges $bd$ and $ci$ are now forced.
+  \end{itemize}
+  \end{block}
+
+  \begin{block}{\Large 5. Expanding to higher-degree graphs}
   \begin{figure}
   \includegraphics[width=\linewidth]{deg5}
   \caption{Ways of splitting a vertex of degree 5 or 6 into two lower-degree vertices.}
@@ -146,12 +145,12 @@
   
   \item We find the shortest way of splitting each vertex via [DH99].
 
-  \item This gives a polynomial speedup for degree-5/6 graphs, but is slower than classical algorithms for degree-7 [HK62, Bj\"o14].
+  \item For degree-5/6 graphs, there are 10 ways of splitting each vertex, of which 6 will preserve the shortest Hamiltonian cycle. Thus we get an additional {\color{uobred} $O((10/6)^{n/2})$} overhead.
+
+  \item For degree-7 graphs, this method is slower than classical algorithms for the general TSP [HK62, Bj\"o14].
   \end{itemize}
   \end{block}
-  \end{column}
 
-  \begin{column}{0.422\linewidth}
   \begin{block}{\Large References}
   [Bj\"o14] A. Bj{\"o}rklund, SIAM Journal on Computing, 43(1):280--299 (2014)
 
